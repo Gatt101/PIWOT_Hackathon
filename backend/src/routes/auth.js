@@ -10,4 +10,6 @@ router.post("/login",login)
 
 router.post("/logout",logout)
 
+router.put("/update-profile",protectRoute,updateProfile);
+                            // ^protectRoute is a middleware 
 export default router;
