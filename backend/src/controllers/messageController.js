@@ -1,7 +1,7 @@
+import mongoose from "mongoose";
 import cloudinary from "../lib/cloudinary.js";
 import Message from "../models/messageModel.js";
 import User from "../models/userModel.js";
-
 
 export const getUsersForSidebar = async ( req,res ) => {
       try{
@@ -21,10 +21,16 @@ export const getMessages = async (req,res) => {
         const { id:userToChatId } = req.params 
         const myId = req.user._id; //myId = senderId
 
+        // Validate if IDs are valid ObjectIds
+        if (!mongoose.Types.ObjectId.isValid(userToChatId) || !mongoose.Types.ObjectId.isValid(senderId)) {
+          return res.status(400).json({ error: "Invalid user ID format" });
+          
+      }
+
         const messages = await Message.find({
           $or:[
-            {senderId:myId , receriverId:userToChatId},
-            {senderId:userToChatId , receriverId:myId}
+            {senderId:myId , receiverId:userToChatId},
+            {senderId:userToChatId , receiverId:myId}
           ]
         })
 
@@ -39,7 +45,7 @@ export const getMessages = async (req,res) => {
 export const sendMessage = async (req,res) => {
     try{
       const {text , image } = req.body;
-      const {id:receriverId}= req.params;
+      const {id:receiverId}= req.params;
       const senderId =  req.user._id;
 
       let imageUrl;
@@ -52,7 +58,7 @@ export const sendMessage = async (req,res) => {
 
       const newMessage = new Message({
         senderId,
-        receriverId,
+        receiverId,
         text,
         image: imageUrl,
       });
