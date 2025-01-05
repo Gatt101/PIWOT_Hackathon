@@ -1,4 +1,3 @@
-import mongoose from "mongoose";
 import cloudinary from "../lib/cloudinary.js";
 import Message from "../models/messageModel.js";
 import User from "../models/userModel.js";
@@ -22,10 +21,9 @@ export const getMessages = async (req,res) => {
         const myId = req.user._id; //myId = senderId
 
         // Validate if IDs are valid ObjectIds
-        if (!mongoose.Types.ObjectId.isValid(userToChatId) || !mongoose.Types.ObjectId.isValid(senderId)) {
-          return res.status(400).json({ error: "Invalid user ID format" });
-          
-      }
+      //   if (!mongoose.Types.ObjectId.isValid(userToChatId) || !mongoose.Types.ObjectId.isValid(myId)) {
+      //     return res.status(400).json({ error: "Invalid user ID format" });    
+      // }
 
         const messages = await Message.find({
           $or:[
