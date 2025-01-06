@@ -1,5 +1,6 @@
-import { Image } from "lucide-react";
+import { Image, Send, X } from "lucide-react";
 import { useRef, useState } from "react";
+import toast from "react-hot-toast";
 import { useChatStore } from "../store/useChatStore";
 
  
@@ -11,12 +12,50 @@ const MessageInput = () => {
 
 
   const handleImageChange = (e) => {
+    const file = e.target.files[0];  // Fixed: Direct access to file
+    
+    if (!file) {
+      return;
+    }
 
+    if (!file.type.startsWith("image/")) {
+      toast.error("Please select an image file");
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      setImagePreview(reader.result);
+    };
+    reader.readAsDataURL(file);
   };
-  
-  const removeImage = () => {}
 
-  const handleSendMessage = async(e) => {}
+  
+
+  const removeImage = () => {
+    setImagePreview(null)
+    if(fileInputRef.current) fileInputRef.current.value = "";
+
+  }
+
+  const handleSendMessage = async(e) => {
+    e.preventDefault();
+    if(!text.trim() && !imagePreview) return;
+
+    try {
+      await sendMessage({
+        text: text.trim(),
+        image: imagePreview,
+      });
+
+      //clear form
+      setText("")
+      setImagePreview(null);
+      if(fileInputRef.current) fileInputRef.current.value = ""
+    } catch (error) {
+      console.error("Failed to send message : ",error);
+    }
+  }
   
 
 
@@ -30,6 +69,7 @@ const MessageInput = () => {
             alt="Preview"
             className="w-20 h-20 object-cover rounded-lg border border-zinc-700"
           />
+          
           <button
             onClick={removeImage}
             className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-base-300
@@ -73,7 +113,7 @@ const MessageInput = () => {
         className="btn btn-sm btn-circle"
         disabled={!text.trim() && !imagePreview}
         >
-          <Send  size={22}/>
+          <Send size={22}/>
         </button>
       </form>
     </div>
