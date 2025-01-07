@@ -1,4 +1,5 @@
 import cloudinary from "../lib/cloudinary.js";
+import { getReceiverSocketId, io } from "../lib/socket.js";
 import Message from "../models/messageModel.js";
 import User from "../models/userModel.js";
 
@@ -19,11 +20,6 @@ export const getMessages = async (req,res) => {
     try{
         const { id:userToChatId } = req.params 
         const myId = req.user._id; //myId = senderId
-
-        // Validate if IDs are valid ObjectIds
-      //   if (!mongoose.Types.ObjectId.isValid(userToChatId) || !mongoose.Types.ObjectId.isValid(myId)) {
-      //     return res.status(400).json({ error: "Invalid user ID format" });    
-      // }
 
         const messages = await Message.find({
           $or:[
@@ -66,7 +62,11 @@ export const sendMessage = async (req,res) => {
       await newMessage.save(); // saving to dba
 
       // todo : realtime fucntionlaity => socket.io
-      // const getReceiverSocketId = getReceiverSocketId(receiverId) 
+       const receiverSocketId = getReceiverSocketId(receiverId) 
+       if(receiverSocketId){
+            io.to(receiverSocketId).emit("newMessage",newMessage);
+
+       }
 
 
       res.status(201).json(newMessage);

@@ -9,12 +9,18 @@ import MessageSkeleton from "./skeletons/MessageSkeleton";
 
 const ChatContainer = () => {
 
-  const {messages, getMessages , isMessagesLoading , selectedUser} = useChatStore();
+  const {messages, getMessages , isMessagesLoading 
+    , selectedUser , subscribeToMessages, unsubscribeFromMessages } = useChatStore();
   const {authUser} = useAuthStore();
 
       useEffect(() =>{
-      getMessages(selectedUser._id)
-    },[selectedUser._id,getMessages])
+      getMessages(selectedUser._id);
+
+      subscribeToMessages();
+
+      return () => unsubscribeFromMessages();
+
+    },[selectedUser._id,getMessages, subscribeToMessages,unsubscribeFromMessages])
    
 
   
