@@ -43,10 +43,12 @@ export const getMessages = async (req,res) => {
 export const sendMessage = async (req,res) => {
     try{
       const {text , image } = req.body;
-      const {id:receriverId}= req.params;
+       const {id:receiverId}= req.params;
+      
+
       const senderId =  req.user._id;
 
-      let imageUrl;
+      let imageUrl="";
 
       if(image){
         //upload base64 image to cloudinary
@@ -56,15 +58,17 @@ export const sendMessage = async (req,res) => {
 
       const newMessage = new Message({
         senderId,
-        receriverId,
+        receiverId,
         text,
         image: imageUrl,
       });
 
-      await newMessage.save(); // saving to db
+      await newMessage.save(); // saving to dba
 
       // todo : realtime fucntionlaity => socket.io
-      
+      // const getReceiverSocketId = getReceiverSocketId(receiverId) 
+
+
       res.status(201).json(newMessage);
 
     }catch(error){

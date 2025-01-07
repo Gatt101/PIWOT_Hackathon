@@ -12,7 +12,7 @@ const Sidebar = () => {
     const {onlineUsers} = useAuthStore();
 
     useEffect(() =>{
-      getUsers()
+      getUsers(); 
     },[getUsers])
 
     if(isUsersLoading) return <SidebarSkeleton/>
@@ -66,7 +66,7 @@ const Sidebar = () => {
 
         {/* {users.length === 0 && (
           <div className="text-center text-zinc-500 py-4">No online users</div>
-        )} */}
+        )} */}  
         
       </div>
     </aside>

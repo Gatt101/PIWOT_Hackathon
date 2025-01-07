@@ -6,30 +6,24 @@ import { useChatStore } from "../store/useChatStore";
  
 const MessageInput = () => {
   const [text,setText] = useState("");
-  const [imagePreview,setImagePreview] = useState("");
+  const [imagePreview,setImagePreview] = useState(null);
   const fileInputRef = useRef(null);
   const {sendMessage} = useChatStore();
 
 
   const handleImageChange = (e) => {
-    const file = e.target.files[0];  // Fixed: Direct access to file
-    
-    if (!file) {
-      return;
-    }
-
+    const file = e.target.files[0];
     if (!file.type.startsWith("image/")) {
       toast.error("Please select an image file");
       return;
     }
 
     const reader = new FileReader();
-    reader.onload = () => {
+    reader.onloadend = () => {
       setImagePreview(reader.result);
     };
     reader.readAsDataURL(file);
   };
-
   
 
   const removeImage = () => {
