@@ -16,7 +16,9 @@ const Sidebar = () => {
       getUsers(); 
     },[getUsers]);
 
-    const filteredUsers = showOnlineOnly ? users.filter(user => onlineUsers.includes(users._id)) : users;
+    const filteredUsers = showOnlineOnly
+    ? users.filter((user) => onlineUsers.includes(user._id))
+    : users;
 
     if(isUsersLoading) return <SidebarSkeleton/>
 
@@ -80,9 +82,10 @@ const Sidebar = () => {
           </button>
         ))}
 
+       
          {filteredUsers.length === 0 && (
-          <div className="text-center text-zinc-500 py-4">No online users , go find someone to Talk with</div>
-        )}   
+          <div className="text-center text-zinc-500 py-4">No online users</div>
+        )}
         
       </div>
     </aside>

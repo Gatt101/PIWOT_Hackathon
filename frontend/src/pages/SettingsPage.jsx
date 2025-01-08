@@ -3,8 +3,8 @@ import { THEMES } from "../constants";
 import { useThemeStore } from "../store/useThemeStore";
 
 const PREVIEW_MESSAGES = [
-  { id: 1, content: "Hey! How's it going?", isSent: false },
-  { id: 2, content: "I'm doing great! Just working on some new features.", isSent: true },
+  { id: 1, content: "What about future ?", isSent: false },
+  { id: 2, content: "I don't believe in what will happen in 6 months or 4 months time, I always stay in the present and think about what needs to be done right now.", isSent: true },
 ];
 
 const SettingsPage = () => {
