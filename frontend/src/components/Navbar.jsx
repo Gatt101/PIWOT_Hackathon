@@ -1,9 +1,9 @@
-import { LogOut, MessageSquare, Settings, User, Newspaper, Mic } from "lucide-react"; // Added Mic icon
+import { LogOut, MessageSquare, Settings, User, Newspaper, Mic } from "lucide-react"; 
 import { Link } from "react-router-dom";
 import { useAuthStore } from "../store/useAuthStore";
 import { useState } from "react";
 
-const Navbar = ({ setText }) => { // Accept setText as a prop
+const Navbar = () => { // Remove setText from the props
   const { logout, authUser } = useAuthStore();
   const [isListening, setIsListening] = useState(false);
   
@@ -28,8 +28,7 @@ const Navbar = ({ setText }) => { // Accept setText as a prop
   // Handle speech recognition results
   speechRecognition.onresult = (event) => {
     const result = event.results[0][0].transcript;
-    setText(result); // Pass the speech result to the parent component (MessageInput)
-    console.log("Speech Result:", result); // For debugging or further processing
+    console.log("Speech Result:", result); // Log the speech result in the console
   };
 
   // Handle any errors in speech recognition
