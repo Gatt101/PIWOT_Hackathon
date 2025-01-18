@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 import express from 'express';
 
 import path from "path";
-
+import newsRoute from './routes/news.js';
 import { connectDB } from "./lib/db.js";
 import { app, server } from "./lib/socket.js";
 
@@ -27,6 +27,7 @@ app.use(
 
 app.use("/api/auth",authRoutes)
 app.use("/api/messages",messageRoutes)
+app.use("/api",newsRoute);
 
 if(process.env.NODE_ENV === "production"){
   app.use(express.static(path.join(__dirname,"../frontend/dist")));
